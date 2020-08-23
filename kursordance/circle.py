@@ -13,7 +13,7 @@ class Circle(pygame.sprite.Sprite):
         img = pygame.image.load(path + "/assets/hitcircleoverlay.png")
         self.images.append(img)
         self.image = self.images[0]
+        self.image = pygame.transform.scale(self.image, (int(self.image.get_width() / 2), int(self.image.get_height() / 2)))
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT / 2 )
     def update(self):
         pass

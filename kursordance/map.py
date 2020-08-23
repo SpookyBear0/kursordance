@@ -5,8 +5,3 @@ import pygame
 from pygame.locals import *
 
 # add map stuff here realistik
-circle = Circle()
-circle.rect.x = 0
-circle.rect.y = 0
-obj_list = pygame.sprite.Group()
-obj_list.add(circle)

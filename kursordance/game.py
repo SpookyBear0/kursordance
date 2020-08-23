@@ -2,6 +2,12 @@ import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 import pygame
 from pygame.locals import *
+from .circle import Circle
+circle = Circle()
+circle.rect.x = 0
+circle.rect.y = 0
+obj_list = pygame.sprite.Group()
+obj_list.add(circle)
 
 path = os.path.dirname(os.path.realpath(__file__))
 

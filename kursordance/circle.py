@@ -15,10 +15,6 @@ class Circle(pygame.sprite.Sprite):
         self.image = self.images[0]
         self.image = pygame.transform.scale(self.image, (int(self.image.get_width() / 2), int(self.image.get_height() / 2)))
         self.rect = self.image.get_rect()
-        c = ACircle()
-        c.rect.x = 0
-        c.rect.y = 0
-        pygame.sprite.Group().add(c)
 
     def update(self):
         pass

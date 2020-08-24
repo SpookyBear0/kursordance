@@ -18,5 +18,19 @@ class Spinner(pygame.sprite.Sprite):
     def update(self):
         pass
     
+class ASpinner(pygame.sprite.Sprite):
+
+    def __init__(self, length):
+        self.i = 100 * length
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        spinner = pygame.image.load(path + "/assets/spinner-approachcircle.png")
+        self.images.append(spinner)
+        self.image = self.images[0]
+        self.image = pygame.transform.scale(self.image, (int(self.image.get_width()), int(self.image.get_height())))
+        self.rect = self.image.get_rect()
+    def update(self):
+        self.image = pygame.transform.scale(self.image, (int(self.image.get_width() - self.i), int(self.image.get_height() - self.i)))
+    
     
 # needs approach circle

@@ -38,7 +38,14 @@ def add_spinner(length):
 screen = pygame.display.set_mode((1920, 1080), FULLSCREEN)
 SCREEN_HEIGHT = screen.get_height()
 SCREEN_WIDTH = screen.get_width()
-def init(map: str, difficulty: str, mirror: bool):
+def init(map: str, difficulty: str, mirror: bool, download: bool):
+    """
+    Args:
+    map: search query for map
+    difficulty: search query for difficulty
+    mirror: mirror mode
+    download: if kursordance should download the map
+    """
     pygame.init()
 
     #backdrop = pygame.image.load("").convert()

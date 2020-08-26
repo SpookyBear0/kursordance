@@ -1,11 +1,12 @@
 import argparse
+import slider
 
 parser = argparse.ArgumentParser(description="Cursordancing bot in python")
 
-parser.add_argument("-m", "-map", metavar="map", type=str, nargs=1)
-parser.add_argument("-d", "-difficulty", metavar="difficulty", type=str, nargs=1)
+parser.add_argument("-map", "-m", metavar="map", type=str, nargs=1)
+parser.add_argument("-difficulty", "-d", metavar="difficulty", type=str, nargs=1)
 parser.add_argument("--mirror", metavar="mirror", type=bool, nargs="?", const=True, default=False)
-parser.add_argument("--dl", "--download", metavar="download", type=bool, nargs="?", const=True, default=False)
+parser.add_argument("--download", "--dl", metavar="download", type=bool, nargs="?", const=True, default=False)
 
 args = parser.parse_args()
 

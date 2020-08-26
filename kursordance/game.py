@@ -5,39 +5,36 @@ from pygame.locals import *
 
 obj_list = pygame.sprite.Group()
 path = os.path.dirname(os.path.realpath(__file__))
-from .map import *
+screen = pygame.display.set_mode((1920, 1080), FULLSCREEN)
 from .circle import ACircle, Circle
 from .slider import Slider
 from .spinner import Spinner
 
 def add_approach_circle(x, y):
     circle = ACircle()
-    circle.rect.x = x # circle x
-    circle.rect.y = y # circle y
+    circle.rect.x = x * 2.5 + screen.get_height() / 4 # circle x
+    circle.rect.y = y * 2.5 # circle y
     obj_list.add(circle)
     
 def add_circle(x, y):
     circle = ACircle()
-    circle.rect.x = x # circle x
-    circle.rect.y = y # circle y
+    circle.rect.x = x * 2.5 + screen.get_height() / 4 # circle x
+    circle.rect.y = y * 2.5 # circle y
     obj_list.add(circle)
     
-def add_slider(x, y, head, tail, *anchors):
-    """doesn't work yet"""
+def add_slider(x, y):
+    return # doesn't work yet
     slider = Slider()
-    slider.rect.x = x # slider x
-    slider.rect.y = y # slider y
+    slider.rect.x = x * 2.5 + screen.get_height() / 4 # slider x
+    slider.rect.y = y * 2.5 # slider y
     obj_list.add(slider)
     
-def add_spinner(length):
-    """doesn't work yet"""
+def add_spinner(length, x, y):
+    #return # doesn't work yet
     spinner = Spinner()
-    spinner.rect.x = screen.get_width() / 2 # spinner x
-    spinner.rect.y = screen.get_height() / 2 # circle y
+    spinner.rect.x = x + screen.get_height() / 3 # spinner x
+    spinner.rect.y = y  # spinner y
     obj_list.add(spinner)
-screen = pygame.display.set_mode((1920, 1080), FULLSCREEN)
-SCREEN_HEIGHT = screen.get_height()
-SCREEN_WIDTH = screen.get_width()
 def init(map: str, difficulty: str, mirror: bool, download: bool):
     """
     Args:
@@ -47,7 +44,8 @@ def init(map: str, difficulty: str, mirror: bool, download: bool):
     download: if kursordance should download the map
     """
     pygame.init()
-
+    #pygame.display.set_caption(str(osu.Beatmap.artist) + " - " + str(osu.Beatmap.title))
+    from . import map
     #backdrop = pygame.image.load("").convert()
     running = True
     while running:

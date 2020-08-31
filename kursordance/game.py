@@ -6,18 +6,12 @@ from pygame.locals import *
 obj_list = pygame.sprite.Group()
 path = os.path.dirname(os.path.realpath(__file__))
 screen = pygame.display.set_mode((1920, 1080), FULLSCREEN)
-from .circle import ACircle, Circle
+from .circle import Circle
 from .slider import Slider
 from .spinner import Spinner
-
-def add_approach_circle(x, y):
-    circle = ACircle()
-    circle.rect.x = x * 2.5 + screen.get_height() / 4 # circle x
-    circle.rect.y = y * 2.5 # circle y
-    obj_list.add(circle)
     
 def add_circle(x, y):
-    circle = ACircle()
+    circle = Circle(x, y)
     circle.rect.x = x * 2.5 + screen.get_height() / 4 # circle x
     circle.rect.y = y * 2.5 # circle y
     obj_list.add(circle)

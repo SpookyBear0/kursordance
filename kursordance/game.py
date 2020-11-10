@@ -10,6 +10,9 @@ shapes = pyglet.shapes
 sprites = pyglet.sprite
 sprite = sprites.Sprite
 window = pyglet.window.Window(fullscreen=False, caption="Kursordance", width=1600, height=900)
+circles = []
+sliders = []
+spinners = []
 
 boundaries = sprite(image("assets/boundaries.png"))
 boundaries.update(scale=1.175)
@@ -25,10 +28,14 @@ def draw_circle(x=0, y=0, number=1):
     circle = [image("assets/hitcircle.png"),
               image("assets/hitcircle-full.png"), 
               image("assets/hitcircleoverlay.png")]
+    i = 0
     for c in circle:
         c = sprite(c, x=x, y=y)
         c.update(scale_y=scale, scale_x=scale)
+        if not i == 2:
+            c.color = (255, 100, 100)
         c.draw()
+        i += 1
     
     # number renderer
     width, height = sprite(circle[0]).width/2, sprite(circle[0]).height/2
@@ -50,6 +57,8 @@ def draw_circle(x=0, y=0, number=1):
         num1.draw()
     num.update(scale_y=scale*2, scale_x=scale*2)
     num.draw()
+    circles.append(circle)
+    
         
 def draw_spinner(time):
     circle = sprite(image("assets/spinner-circle.png"), x=window.width/4, y=window.height/14)
@@ -58,9 +67,7 @@ def draw_spinner(time):
     acircle.update(scale_y=2, scale_x=2)
     circle.draw()
     acircle.draw()
-    while time:
-        acircle.opacity -= 10
-        circle.opacity -= 10
+    spinners.append([circle, acircle])
     
 def draw_slider(x, y, scorepoints, number=1):
     # draw hitcircle
@@ -83,7 +90,17 @@ def on_draw():
         elif isinstance(o, objects.Spinner):
             draw_spinner(o.time - o.endTime)
         combo += 1
-        
+    draw_cursor()
+
+def draw_cursor():
+    cursorparts = [image("assets/cursor.png"),
+                   image("assets/cursor-top.png")]
+    for c in cursorparts:
+        c = sprite(c)
+        c.update(scale_x=0.5, scale_y=0.5)
+        c.color = (255, 100, 100) 
+        c.draw()
+
 def init(bmap: str, difficulty: str, mirror: bool, download: bool):
     """
     Args:
@@ -93,7 +110,7 @@ def init(bmap: str, difficulty: str, mirror: bool, download: bool):
     download: if kursordance should download the map
     """
     global map
-    map = beatmap.Beatmap("D:\\games\\osu!\\Songs\\Tokyo_machine_-_Bubbles\\Tokyo machine - Bubbles (UslessLmao) [Normal].osu")
+    map = beatmap.Beatmap("D:\\games\\osu!\\Songs\\Tokyo_machine_-_Bubbles\\Tokyo machine - Bubbles (UslessLmao) [spookybear0's difficult].osu")
     #audio = sound.load("D:\\games\\osu!\\Songs\\Tokyo_machine_-_Bubbles\\audio.mp3")
     #audio.play()
     pyglet.app.run()

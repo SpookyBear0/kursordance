@@ -1,5 +1,5 @@
 import argparse
-import slider
+from kursordance.game import init
 
 parser = argparse.ArgumentParser(description="Cursordancing bot in python")
 
@@ -11,5 +11,4 @@ parser.add_argument("--download", "--dl", metavar="download", type=bool, nargs="
 args = parser.parse_args()
 
 if __name__ == "__main__":
-    from kursordance.game import init
     init(args.map, args.difficulty, args.mirror, args.download)

@@ -1,3 +1,0 @@
-osu.py
-pygame
-requests

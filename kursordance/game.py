@@ -1,35 +1,90 @@
-import os
-os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
-import pygame
-from pygame.locals import *
+if __name__ == "__main__":
+    exit()
+import pyglet
+from osu import beatmap, objects
 
-obj_list = pygame.sprite.Group()
-path = os.path.dirname(os.path.realpath(__file__))
-screen = pygame.display.set_mode((1920, 1080), FULLSCREEN)
-from .circle import Circle
-from .slider import Slider
-from .spinner import Spinner
+resource = pyglet.resource
+image = resource.image
+sound = pyglet.media
+shapes = pyglet.shapes
+sprites = pyglet.sprite
+sprite = sprites.Sprite
+window = pyglet.window.Window(fullscreen=False, caption="Kursordance", width=1600, height=900)
+
+boundaries = sprite(image("assets/boundaries.png"))
+boundaries.update(scale=1.175)
+
+def to_scale(cs):
+    CSratio = [0.75, 2]
+    return CSratio[0]/(cs/CSratio[1])
+
+def draw_circle(x=0, y=0, number=1):
+    cs = map.CS
+    scale = to_scale(cs)
+    x, y = x * 2 + window.width/6.5, y * 2.1
+    circle = [image("assets/hitcircle.png"),
+              image("assets/hitcircle-full.png"), 
+              image("assets/hitcircleoverlay.png")]
+    for c in circle:
+        c = sprite(c, x=x, y=y)
+        c.update(scale_y=scale, scale_x=scale)
+        c.draw()
     
-def add_circle(x, y):
-    circle = Circle(x, y)
-    circle.rect.x = x * 2.5 + screen.get_height() / 4 # circle x
-    circle.rect.y = y * 2.5 # circle y
-    obj_list.add(circle)
+    # number renderer
+    width, height = sprite(circle[0]).width/2, sprite(circle[0]).height/2
+    if number < 10:
+        num = sprite(image(f"assets/numbers/default-{number}.png"),
+                     x=x+scale*width/1.5,
+                     y=y+scale*height/2)
+    else:
+        if number > 99:
+            number = 99
+        number = str(number)
+        num = sprite(image(f"assets/numbers/default-{number[0]}.png"),
+                     x=x+scale*width/2.15,
+                     y=y+scale*height/2)
+        num1 = sprite(image(f"assets/numbers/default-{number[1]}.png"),
+                      x=x+scale*width/1.15,
+                      y=y+scale*height/2)
+        num1.update(scale_y=scale*2, scale_x=scale*2)
+        num1.draw()
+    num.update(scale_y=scale*2, scale_x=scale*2)
+    num.draw()
+        
+def draw_spinner(time):
+    circle = sprite(image("assets/spinner-circle.png"), x=window.width/4, y=window.height/14)
+    acircle = sprite(image("assets/spinner-approachcircle.png"), x=window.width/4, y=window.height/14)
+    circle.update(scale_y=0.6, scale_x=0.6)
+    acircle.update(scale_y=2, scale_x=2)
+    circle.draw()
+    acircle.draw()
+    while time:
+        acircle.opacity -= 10
+        circle.opacity -= 10
     
-def add_slider(x, y):
-    return # doesn't work yet
-    slider = Slider()
-    slider.rect.x = x * 2.5 + screen.get_height() / 4 # slider x
-    slider.rect.y = y * 2.5 # slider y
-    obj_list.add(slider)
-    
-def add_spinner(length, x, y):
-    #return # doesn't work yet
-    spinner = Spinner()
-    spinner.rect.x = x + screen.get_height() / 3 # spinner x
-    spinner.rect.y = y  # spinner y
-    obj_list.add(spinner)
-def init(map: str, difficulty: str, mirror: bool, download: bool):
+def draw_slider(x, y, scorepoints, number=1):
+    # draw hitcircle
+    draw_circle(x, y, number)
+    # draw slider...
+
+@window.event
+def on_draw():
+    window.clear()
+    window.set_caption(map.artist + " - " + map.title + " [" + map.diffName + "]")
+    boundaries.draw()
+    combo = 1
+    for o in map.hitObjects:
+        if combo == 100:
+            combo = 1
+        if isinstance(o, objects.Circle):
+            draw_circle(o.x, o.y, combo)
+        elif isinstance(o, objects.Slider):
+            draw_slider(o.x, o.y, combo)
+        elif isinstance(o, objects.Spinner):
+            draw_spinner(o.time - o.endTime)
+        combo += 1
+        
+def init(bmap: str, difficulty: str, mirror: bool, download: bool):
     """
     Args:
     map: search query for map
@@ -37,21 +92,9 @@ def init(map: str, difficulty: str, mirror: bool, download: bool):
     mirror: mirror mode
     download: if kursordance should download the map
     """
-    pygame.init()
-    #pygame.display.set_caption(str(osu.Beatmap.artist) + " - " + str(osu.Beatmap.title))
-    from . import map
-    #backdrop = pygame.image.load("").convert()
-    running = True
-    while running:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-        screen.fill((0, 0, 0))
-        #world.blit(backdrop, backdropbox)
-        obj_list.draw(screen) # draw player
-        pygame.display.flip()
-    pygame.quit()
+    global map
+    map = beatmap.Beatmap("D:\\games\\osu!\\Songs\\Tokyo_machine_-_Bubbles\\Tokyo machine - Bubbles (UslessLmao) [Normal].osu")
+    #audio = sound.load("D:\\games\\osu!\\Songs\\Tokyo_machine_-_Bubbles\\audio.mp3")
+    #audio.play()
+    pyglet.app.run()
+    
